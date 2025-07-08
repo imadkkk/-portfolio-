@@ -555,7 +555,7 @@
   <!-- Header Navigation -->
   <header>
     <nav>
-      <div class="logo">Imad.dev</div>
+      <div class="logo">EL ALAMI IMAD  </div>
       <div class="nav-links">
         <a href="#about">À propos</a>
         <a href="#skills">Compétences</a>
@@ -565,6 +565,9 @@
       </div>
       <button class="mobile-menu-btn">
         <i class="fas fa-bars"></i>
+      </button>
+      <button id="theme-toggle" title="Changer le mode" style="margin-left: 1rem; background: none; border: none; cursor: pointer; font-size: 1.5rem; color: var(--accent);">
+        <i class="fas fa-sun"></i>
       </button>
     </nav>
   </header>
@@ -844,7 +847,7 @@
     </div>
     <div class="contact-container">
       <div class="contact-form" data-aos="fade-right">
-        <form action="https://formspree.io/f/xqknqyqy" method="POST">
+        <form action="https://formspree.io/f/mqabvpaz" method="POST">
           <div class="form-group">
             <label for="name">Nom</label>
             <input type="text" id="name" name="name" class="form-control" required>
@@ -899,6 +902,7 @@
 
   <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
     // Initialize AOS
     AOS.init({
@@ -938,6 +942,51 @@
       e.preventDefault();
       alert('Merci pour votre message ! Je vous répondrai très rapidement.');
       contactForm.reset();
+    });
+
+    // Light/Dark mode toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const sunIcon = '<i class="fas fa-sun"></i>';
+    const moonIcon = '<i class="fas fa-moon"></i>';
+    function setTheme(mode) {
+      if (mode === 'light') {
+        document.documentElement.style.setProperty('--primary-bg', '#f8fafc');
+        document.documentElement.style.setProperty('--secondary-bg', '#e2e8f0');
+        document.documentElement.style.setProperty('--text-primary', '#22223b');
+        document.documentElement.style.setProperty('--text-secondary', '#4a5568');
+        document.documentElement.style.setProperty('--accent', '#0ea5e9');
+        themeToggle.innerHTML = moonIcon;
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.documentElement.style.setProperty('--primary-bg', '#0a192f');
+        document.documentElement.style.setProperty('--secondary-bg', '#112240');
+        document.documentElement.style.setProperty('--text-primary', '#ccd6f6');
+        document.documentElement.style.setProperty('--text-secondary', '#8892b0');
+        document.documentElement.style.setProperty('--accent', '#64ffda');
+        themeToggle.innerHTML = sunIcon;
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+    themeToggle.addEventListener('click', () => {
+      const current = localStorage.getItem('theme') || 'dark';
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+    // Initial theme
+    setTheme(localStorage.getItem('theme') || 'dark');
+
+    // Confetti effect on contact and CV download buttons
+    function launchConfetti() {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    }
+    // Contact button
+    document.querySelectorAll('a.btn, button.btn').forEach(btn => {
+      if (btn.textContent.includes('Contact') || btn.textContent.includes('CV')) {
+        btn.addEventListener('click', launchConfetti);
+      }
     });
   </script>
 </body>
